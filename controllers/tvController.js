@@ -18,9 +18,12 @@ export const getTV = async (req, res) => {
     },
   });
 
-  //filtrar la respuesta por el genero del id (genre_ids)
-  const dataFilter = response.data.results.filter((tv) => {
-    return tv.genre_ids.includes(parseInt(genres));
+  if (!genres) {
+    return res.send(response.data.results);
+  }
+
+  const dataFilter = response.data.results.filter((movie) => {
+    return movie.genre_ids.includes(parseInt(genres));
   });
 
   return res.send(dataFilter);

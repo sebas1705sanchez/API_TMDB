@@ -19,13 +19,22 @@ const TMDB_API = axios.create({
 app.use(express.json());
 app.use(express.text());
 
-app.get("/tmdb", async (req, res) => {
-    const { page, language } = req.query;
+app.get("/api/movies", async (req, res) => {
+    const page = req.query.page;
+    const language = req.query.language; 
+    const genres = req.query.with_genres;
+    const query = req.query.with_keywords;
+    const region = req.query.region;
 
-    const response = await TMDB_API.get('/movie/popular', {
+    // console.log(query);
+
+    const response = await TMDB_API.get('/discover/movie', {
       params: {
         page: page,
         language: language,
+        with_genres: genres,
+        with_keywords: query,
+        regin: region,
       },
     });
 
@@ -49,6 +58,28 @@ app.get("/api/movies/:id", async (req, res) => {
   }
 })
 
+app.get("/api/tv", async (req, res) => {
+  const page = req.query.page;
+  const language = req.query.language; 
+  const genres = req.query.with_genres;
+  const query = req.query.with_keywords;
+  const region = req.query.region;
+
+  // console.log(query);
+
+  const response = await TMDB_API.get('/discover/tv', {
+    params: {
+      page: page,
+      language: language,
+      with_genres: genres,
+      with_keywords: query,
+      region: region
+    },
+  });
+
+  return res.send(response.data);
+});
+
 app.get("/api/tv/:id", async (req, res) => {
   const { id } = req.params;
   const { language } = req.query;
@@ -61,6 +92,24 @@ app.get("/api/tv/:id", async (req, res) => {
     });
 
     return res.send(response.data);
+  } catch (error) {
+    return res.status(404).send();
+  }
+})
+
+app.get("/api/people", async (req, res) => {
+  const query = req.query.keyword;
+  const language = req.query.language; 
+  const page = req.query.page;
+
+  try {
+    const response = await TMDB_API.get('/search/person', {
+      params: {
+        query: query,
+        language: language,
+        page: page,
+      }
+    })
   } catch (error) {
     return res.status(404).send();
   }

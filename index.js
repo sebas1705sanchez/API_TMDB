@@ -22,23 +22,25 @@ app.use(express.text());
 app.get("/api/movies", async (req, res) => {
     const page = req.query.page;
     const language = req.query.language; 
-    const genres = req.query.with_genres;
-    const query = req.query.with_keywords;
+    const genres = req.query.genres;
+    const query = req.query.query; 
     const region = req.query.region;
 
-    // console.log(query);
-
-    const response = await TMDB_API.get('/discover/movie', {
+    const response = await TMDB_API.get('/search/movie', {
       params: {
         page: page,
         language: language,
-        with_genres: genres,
-        with_keywords: query,
+        query: query,
         regin: region,
       },
     });
 
-    return res.send(response.data);
+    //filtrar la respuesta por el genero del id (genre_ids)
+    const dataFilter = response.data.results.filter((movie) => {
+      return movie.genre_ids.includes(parseInt(genres));
+    });
+    
+    return res.send(dataFilter);
 });
 
 app.get("/api/movies/:id", async (req, res) => {
@@ -61,23 +63,27 @@ app.get("/api/movies/:id", async (req, res) => {
 app.get("/api/tv", async (req, res) => {
   const page = req.query.page;
   const language = req.query.language; 
-  const genres = req.query.with_genres;
-  const query = req.query.with_keywords;
+  const genres = req.query.genres;
+  const query = req.query.query;
   const region = req.query.region;
 
   // console.log(query);
 
-  const response = await TMDB_API.get('/discover/tv', {
+  const response = await TMDB_API.get('/search/tv', {
     params: {
       page: page,
       language: language,
-      with_genres: genres,
-      with_keywords: query,
+      query: query,
       region: region
     },
   });
 
-  return res.send(response.data);
+  //filtrar la respuesta por el genero del id (genre_ids)
+  const dataFilter = response.data.results.filter((tv) => {
+    return tv.genre_ids.includes(parseInt(genres));
+  });
+
+  return res.send(dataFilter);
 });
 
 app.get("/api/tv/:id", async (req, res) => {
@@ -98,7 +104,7 @@ app.get("/api/tv/:id", async (req, res) => {
 })
 
 app.get("/api/people", async (req, res) => {
-  const query = req.query.keyword;
+  const query = req.query.query;
   const language = req.query.language; 
   const page = req.query.page;
 
@@ -110,6 +116,7 @@ app.get("/api/people", async (req, res) => {
         page: page,
       }
     })
+    return res.send(response.data.results);
   } catch (error) {
     return res.status(404).send();
   }

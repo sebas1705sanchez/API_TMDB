@@ -1,17 +1,4 @@
-import dotenv from "dotenv";
-import axios from "axios";
-
-dotenv.config();
-
-const API_KEY = process.env.API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
-
-const TMDB_API = axios.create({
-  baseURL: BASE_URL,
-  params: {
-    api_key: API_KEY,
-  },
-});
+import TMDB_API from "../api/TMDB_API.js";
 
 export const getMovie = async (req, res) => {
   const page = req.query.page;
@@ -29,7 +16,6 @@ export const getMovie = async (req, res) => {
     },
   });
 
-  //filtrar la respuesta por el genero del id (genre_ids)
   if (!genres) {
     return res.send(response.data.results);
   }

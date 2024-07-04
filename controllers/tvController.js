@@ -1,19 +1,6 @@
-import dotenv from "dotenv";
-import axios from "axios";
+import TMDB_API from "../api/TMDB_API.js";
 
-dotenv.config();
-
-const API_KEY = process.env.API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
-
-const TMDB_API = axios.create({
-  baseURL: BASE_URL,
-  params: {
-    api_key: API_KEY,
-  },
-});
-
-export const getTV =  async (req, res) => {
+export const getTV = async (req, res) => {
   const page = req.query.page;
   const language = req.query.language;
   const genres = req.query.genres;

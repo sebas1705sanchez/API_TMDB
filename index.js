@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use("/api", movieRouter);
-app.use(tvRouter);
-app.use(peopleRouter);
+app.use("/api", tvRouter);
+app.use("/api", peopleRouter);
 
 app.listen(PORT, () => {
   console.clear();

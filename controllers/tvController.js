@@ -1,8 +1,8 @@
 import TMDB_API from "../api/TMDB_API.js";
 
 export const getTV = async (req, res) => {
-  const page = req.query.page;
-  const language = req.query.language;
+  const page = req.query.page || 1;
+  const language = req.query.language || 'en-US';
   const genres = req.query.genres;
   const query = req.query.query;
   const region = req.query.region;

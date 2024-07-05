@@ -2,8 +2,8 @@ import TMDB_API from "../api/TMDB_API.js";
 
 export const getPeople = async (req, res) => {
   const query = req.query.query;
-  const language = req.query.language;
-  const page = req.query.page;
+  const language = req.query.language || 'en-US';
+  const page = req.query.page || 1;
   const include_adult = req.query.include_adult;
 
   try {

@@ -5,6 +5,9 @@ import peopleRouter from "./routes/people.js";
 import trendingRouter from "./routes/trending.js";
 import dotenv from "dotenv";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -19,3 +22,4 @@ app.listen(PORT, () => {
   console.clear();
   console.log("Servidor iniciado");
 });
+import { fileURLToPath } from 'url';

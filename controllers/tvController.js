@@ -7,8 +7,6 @@ export const getTV = async (req, res) => {
   const query = req.query.query;
   const region = req.query.region;
 
-  // console.log(query);
-
   const response = await TMDB_API.get("/search/tv", {
     params: {
       page: page,
@@ -22,8 +20,18 @@ export const getTV = async (req, res) => {
     return res.send(response.data.results);
   }
 
+  const genreList = await TMDB_API.get("/genre/tv/list", {
+    params: {
+      language: language,
+    },
+  });
+
+  const genre = genreList.data.genres.find((genre) => {
+    return genre.name === genres;
+  }).id;
+
   const dataFilter = response.data.results.filter((movie) => {
-    return movie.genre_ids.includes(parseInt(genres));
+    return movie.genre_ids.includes(parseInt(genre));
   });
 
   return res.send(dataFilter);

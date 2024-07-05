@@ -4,6 +4,7 @@ export const getPeople = async (req, res) => {
   const query = req.query.query;
   const language = req.query.language;
   const page = req.query.page;
+  const include_adult = req.query.include_adult;
 
   try {
     const response = await TMDB_API.get("/search/person", {
@@ -11,6 +12,7 @@ export const getPeople = async (req, res) => {
         query: query,
         language: language,
         page: page,
+        include_adult: include_adult,
       },
     });
     return res.send(response.data.results);
